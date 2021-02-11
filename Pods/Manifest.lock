@@ -1,0 +1,20 @@
+PODS:
+  - FSCalendar (2.8.2)
+  - ViewAnimator (3.0.2)
+
+DEPENDENCIES:
+  - FSCalendar
+  - ViewAnimator
+
+SPEC REPOS:
+  trunk:
+    - FSCalendar
+    - ViewAnimator
+
+SPEC CHECKSUMS:
+  FSCalendar: e6a2eb9c571bf0719ed797ef807e08426753c241
+  ViewAnimator: 16435576cd44fca0b0d63147d5031fd3e91d295a
+
+PODFILE CHECKSUM: c90589a0e3d61bfc08f3901f6013a1a6168fa813
+
+COCOAPODS: 1.10.1
