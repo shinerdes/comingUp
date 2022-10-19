@@ -1,27 +1,23 @@
-//
-//  NewPostVC.swift
-//  AdvancedToDoApp
-//
-//  Created by 김영석 on 2020/11/04.
-//  Copyright © 2020 FastCampus. All rights reserved.
-//
-
-// UI만 남았다고 보면 될듯?
 
 
 import UIKit
 import FSCalendar
 
+var newDate = ""
 
+public enum ScrollDirection {
+    case top
+    case center
+    case bottom
+}
 
-class NewPostVC: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
+class NewPostVC: UIViewController, FSCalendarDelegate, FSCalendarDataSource, UITextViewDelegate {
     
     
     
     
     var newTitle: String = ""
     var newContents: String = ""
-    var newDate: String = ""
     var newImageHead: String = "" // image 파일을 끄집어 내야
     var newCreateDate: String = ""
     var newFavorite: Bool = false
@@ -29,16 +25,22 @@ class NewPostVC: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
     let img = UIImage()
     var pickImage = UIImage()
     var pickInfo: [UIImagePickerController.InfoKey : Any]?
+    var checkScroll = 0
     
     let todoModel = TodoViewModel()
     
+    @IBOutlet weak var DateLbl: UILabel!
     
     @IBOutlet weak var titleTxtView: UITextField!
     
+    @IBOutlet weak var scroll: UIScrollView!
+    @IBOutlet weak var scrollView: UIView!
     
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var calendar: FSCalendar!
+   // @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var textView: UITextView!
+    
+    @IBOutlet weak var calendarBtn: UIButton!
     
     let dateFormatter = DateFormatter()
     let imagePicker = UIImagePickerController()
@@ -49,22 +51,23 @@ class NewPostVC: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
         super.viewDidLoad()
         
         imagePicker.delegate = self
-    
-        calendar.appearance.titleDefaultColor = UIColor.label
+  
+        //calendar.appearance.titleDefaultColor = UIColor.label
 
 
         
         dateFormatter.dateFormat = "yyyy-MM-dd"
 
-        calendar.delegate = self
-        calendar.dataSource = self
+//        calendar.delegate = self
+ //       calendar.dataSource = self
         //calendar.swipeToChooseGesture.isEnabled = true // 다중선택
-        
+        scroll.isScrollEnabled = false
         textView.delegate = self
         textView.isScrollEnabled = true
         textView.layer.cornerRadius = 5
         
-        
+        calendarBtn.setTitle("", for: .normal)
+    
         textView.font = UIFont.systemFont(ofSize: 17.0)
         
         imageView.layer.cornerRadius = 5
@@ -83,9 +86,26 @@ class NewPostVC: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
             
         }
         print(pickInfo)
-      
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(Pickdate), name: .date, object: nil)
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
+        scrollView.addGestureRecognizer(tapGesture)
+
      
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("searchedTypes")
+        DateLbl.text = newDate
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        newDate = ""
+    }
+    
+    
+    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
         
@@ -107,21 +127,21 @@ class NewPostVC: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
         present(imagePicker, animated: false, completion: nil)
     }
 
-    
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        print(dateFormatter.string(from: date) + " 선택됨")
-        newDate = dateFormatter.string(from: date)
-    }
-    
-    func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
-        switch dateFormatter.string(from: date) {
-        case dateFormatter.string(from: Date()):
-            return "오늘"
-        default:
-            return nil
-        }
-        
-    }
+//
+//    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+//        print(dateFormatter.string(from: date) + " 선택됨")
+//        newDate = dateFormatter.string(from: date)
+//    }
+//
+//    func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
+//        switch dateFormatter.string(from: date) {
+//        case dateFormatter.string(from: Date()):
+//            return "오늘"
+//        default:
+//            return nil
+//        }
+//
+//    }
 
     
     @IBAction func unwindToMain(_ unwindSegue: UIButton) {
@@ -132,16 +152,61 @@ class NewPostVC: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
 
     }
     
-    @IBAction func enrollBtnWasPressed(_ sender: Any) {
+    @objc func handleTap(sender: UITapGestureRecognizer) {
+        print("tap")
+        if checkScroll == 1 {
+            checkScroll = 0
+            dismissKeyboard()
+            DispatchQueue.main.async {
+                self.scroll.scroll(to: .top)
+               
+            }
+        }
         
-        
+    }
+    @objc func Pickdate() {
+        print("어우어어우")
+        print(newDate)
+        DateLbl.text = newDate
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        print("exampleTextView: BEGIN EDIT")
+        checkScroll = 1
+        DispatchQueue.main.async {
+            
+            self.scroll.scroll(to: .center)
+            
+        }
+     }
+     
+     func textViewDidEndEditing(_ textView: UITextView) {
+         print("exampleTextView: END EDIT")
       
+         DispatchQueue.main.async {
+                
+             self.scroll.scroll(to: .top)
+         }
+     }
+    
+    
+    @IBAction func CalendarBtnWasPressed(_ sender: Any) {
+        let calendarVC = self.storyboard?.instantiateViewController(withIdentifier: "Calendar") as? PopUpCalendarVC
+        calendarVC?.modalPresentationStyle = .popover
+//        calendarVC?.PopUpcalendar.delegate = self
+//        calendarVC?.PopUpcalendar.dataSource = self
+        print("아니")
+        calendarVC?.enterType = 1
         
-        // 거부
-        // 텍스트 nil이면 alert 호출 하고 거부
-        
-        // 생성
-        
+        self.present(calendarVC!, animated: true, completion: nil)
+
+    }
+    
+    
+    
+    
+    @IBAction func enrollBtnWasPressed(_ sender: Any) {
+     
         let createDate = Date().toString(dateFormat: "yyyy-MM-dd HH:mm:ss") // json 저장되는 날짜와 시간
         
         
@@ -207,6 +272,9 @@ class NewPostVC: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
             return
             
         }
+         // 날짜 체크
+       
+        
         let todo = TodoManager.shared.createTodo(title: checkEmpty, content: newContents, date: newDate, imageHead: newImageHead, createDate: createDate)
         todoModel.addTodo(todo)
         print("json 저장 완료") // 일단 image를 제외한 나머지는 ok
@@ -263,18 +331,7 @@ class NewPostVC: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
 
 
 
-extension NewPostVC: UITextViewDelegate {
-    func textViewDidChange(_ textView: UITextView) {
-        
-//        let size = CGSize(width: view.frame.width, height: .infinity)
-//        let estimatedSize = textView.sizeThatFits(size)
-//        textView.constraints.forEach { (constraint) in
-//            if constraint.firstAttribute == .height {
-//                constraint.constant = estimatedSize.height
-//            }
-//        }
-    }
-}
+
 extension NewPostVC : UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -294,18 +351,6 @@ extension NewPostVC : UIImagePickerControllerDelegate, UINavigationControllerDel
             pickInfo = info
             print(pickInfo)
             
-            
-//            do {
-//                //let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-//
-//                //try imageData?.write(to: "\(documentsPath)myImage", options: [])
-//                try imageData?.write(to: URL(string: "\(documentsPath)/myImage")!, options: .atomic)
-//                print("저장완")
-//
-//            } catch {
-//                print("Error")
-//                print(error)
-//            }
 
 
         } else {
@@ -329,3 +374,55 @@ extension Date {
    
 }
 
+extension Notification.Name {
+    static let date = Notification.Name("date")
+}
+
+
+public extension UIScrollView {
+    func scroll(to direction: ScrollDirection) {
+       DispatchQueue.main.async {
+           switch direction {
+           case .top:
+               self.scrollToTop()
+           case .center:
+               self.scrollToCenter()
+           case .bottom:
+               self.scrollToBottom()
+           }
+       }
+   }
+
+   private func scrollToTop() {
+       setContentOffset(.zero, animated: true)
+   }
+
+   private func scrollToCenter() {
+      // let centerOffset = CGPoint(x: 0, y: (contentSize.height - bounds.size.height) / 2)
+       let centerOffset = CGPoint(x: 0, y: 222)
+       setContentOffset(centerOffset, animated: true)
+   }
+
+   private func scrollToBottom() {
+       let bottomOffset = CGPoint(x: 0, y: contentSize.height - bounds.size.height + contentInset.bottom)
+       if(bottomOffset.y > 0) {
+           setContentOffset(bottomOffset, animated: true)
+       }
+   }
+}
+
+
+extension UIViewController
+{
+    func hideKeyboard()
+    {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(UIViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    @objc func dismissKeyboard()
+    {
+        view.endEditing(true)
+    }
+}

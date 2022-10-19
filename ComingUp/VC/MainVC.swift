@@ -1,17 +1,4 @@
-//
-//  MainVC.swift
-//  AdvancedToDoApp
-//
-//  Created by 김영석 on 2020/10/28.
-//  Copyright © 2020 FastCampus. All rights reserved.
-//
 
-
-// 남은 작업
-
-
-// 오토레이 아웃 // 마지막 파이널
-// 프로젝트 이름 리네이밍
 import UIKit
 import ViewAnimator
 
@@ -21,15 +8,14 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var comingUpTitleLbl: UILabel!
     @IBOutlet weak var comingUpDateLbl: UILabel!
     
-   
+    @IBOutlet weak var tableView: UITableView!
+    
     private var items = [Any?]()
     private let activityIndicator = UIActivityIndicatorView(style: .gray)
     private let animations = [AnimationType.vector(CGVector(dx: 0, dy: 30))]
     
     // var iconArray = Array<String>() // icon
     // dateArray 정렬 -> 오늘 날짜에 가장 가까운 date의 index를 뽑아내서 다시 pass
-    
-    
     
     var comingUpNextTitle = "돌아오는 일정은 없습니다"
     var comingUpNextDate = ""
@@ -72,30 +58,15 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.delegate = self
         
         todoListViewModel.loadTasks()
-        
-        print("테스트")
+
         print(todoListViewModel.loadTasks())
-        
-    
-        
-        
-        
        
-        
-        //let fullPath =
-        
-        //if let imsiContent = try? String(
-        
-        // Do any additional setup after loading the view.
-        
         // table View
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadJson()
-        
-        print("절취선")
         comingUp()
         
     
@@ -107,10 +78,6 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-//        UIView.animate(views: tableView.visibleCells, animations: animations, completion: {
-//
-//        })
 
         self.tableView.reloadData()
     }
@@ -135,7 +102,6 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func reloadData(){
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            print("Work SO !!")
             self.tableView.reloadData()
         }
     }
@@ -151,13 +117,6 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-
-//        let vc = segue.destination as! OpenSourceVC
-//        let cell = sender as! UITableViewCell
-//        let indexPath = tableView.indexPath(for: cell)
-//        vc.showLicense = openSourceItems[(indexPath?.row)!]
         
         if segue.identifier == "sgDetail" {
 
@@ -236,7 +195,6 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             print(titleArray)
             print(contentArray)
             print(dateArray)
-            print("imageArray")
             print(imageArray)
             print(createDateArry)
             print(favoriteArray)
@@ -280,13 +238,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             if sortStringDateArray[0] < today {
                 sortStringDateArray.remove(at: 0)
             }
-            print("일단 몇번인지 확인")
         }
-       
-        
-        
-        
-
 
         var imsi = 0
         
@@ -359,10 +311,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         
         // go to detailVC
-        
-        
-        
-        
+
 //        guard let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "detailVC") as? DetailVC else {
 //            return
 //        }
@@ -395,24 +344,8 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     
     
-    
-    
-    
-    @IBOutlet weak var tableView: UITableView!
-    
-    
-    
-  
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
+
+
     
 }
 

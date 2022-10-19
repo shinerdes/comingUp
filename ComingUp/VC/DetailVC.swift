@@ -1,10 +1,3 @@
-//
-//  DetailVC.swift
-//  AdvancedToDoApp
-//
-//  Created by 김영석 on 2020/11/04.
-//  Copyright © 2020 FastCampus. All rights reserved.
-//
 
 import UIKit
 
@@ -80,13 +73,6 @@ class DetailVC: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-
-//        let vc = segue.destination as! OpenSourceVC
-//        let cell = sender as! UITableViewCell
-//        let indexPath = tableView.indexPath(for: cell)
-//        vc.showLicense = openSourceItems[(indexPath?.row)!]
         
         if segue.identifier == "sgFix" {
 

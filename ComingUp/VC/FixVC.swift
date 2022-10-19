@@ -1,25 +1,27 @@
-//
-//  FixVC.swift
-//  AdvancedToDoApp
-//
-//  Created by 김영석 on 2020/11/14.
-//  Copyright © 2020 FastCampus. All rights reserved.
-//
+
 import FSCalendar
 import UIKit
 
-class FixVC: UIViewController, FSCalendarDataSource, FSCalendarDelegate {
+var fixDate = ""
+
+class FixVC: UIViewController, FSCalendarDataSource, FSCalendarDelegate, UITextViewDelegate {
     
     @IBOutlet weak var fixTitleTextField: UITextField!
     @IBOutlet weak var fixImageView: UIImageView!
-    @IBOutlet weak var calendar: FSCalendar!
+
     @IBOutlet weak var fixTextView: UITextView!
-    
+    @IBOutlet weak var fixDateLbl: UILabel!
     let imagePicker = UIImagePickerController()
     var pickImage = UIImage()
     var pickInfo: [UIImagePickerController.InfoKey : Any]?
     let dateFormatter = DateFormatter()
     
+    @IBOutlet weak var scroll: UIScrollView!
+    @IBOutlet weak var scrollView: UIView!
+    
+    @IBOutlet weak var calendarBtn: UIButton!
+    
+    var checkScroll = 0
     
     var receiveId = 0
     var receiveTitle = ""
@@ -41,19 +43,20 @@ class FixVC: UIViewController, FSCalendarDataSource, FSCalendarDelegate {
         
         todoListViewModel.loadTasks()
         
+
+        
         dateFormatter.dateFormat = "yyyy-MM-dd"
+        calendarBtn.setTitle("", for: .normal)
         
         imagePicker.delegate = self
         fixTitleTextField.text = receiveTitle
         
+        fixDateLbl.text = receiveDate
         fixTextView.text = receiveContent
         fixTextView.isEditable = true
         fixTextView.layer.cornerRadius = 5
-       
-       
-        
-        calendar.delegate = self
-        calendar.dataSource = self
+
+
         
         fixTextView.delegate = self
         fixTextView.isScrollEnabled = true
@@ -61,12 +64,28 @@ class FixVC: UIViewController, FSCalendarDataSource, FSCalendarDelegate {
        
         fixImageView.image = load(fileName: receiveImageHead)
         fixImageView.layer.cornerRadius = 5
-       
-        calendar.appearance.titleDefaultColor = UIColor.label
+        
+        scroll.isScrollEnabled = false
+        NotificationCenter.default.addObserver(self, selector: #selector(Pickdate), name: .date, object: nil)
 
         
         print(receiveDate)
+        
+        print("receiveDate")
+        
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
+        scrollView.addGestureRecognizer(tapGesture)
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+
+        fixDateLbl.text = receiveDate
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        fixDate = ""
     }
     
     private func load(fileName: String) -> UIImage? {
@@ -117,7 +136,45 @@ class FixVC: UIViewController, FSCalendarDataSource, FSCalendarDelegate {
         // detailView.receiveItem(items[((indexPath as NSIndexPath?)?.row)!])
 
     }
+    
+    @objc func Pickdate() {
+        print("어우어어우")
+        print(fixDate)
+        fixDateLbl.text = fixDate
+        receiveDate = fixDate
+    }
+    
+    @objc func handleTap(sender: UITapGestureRecognizer) {
+        print("tap")
+        if checkScroll == 1 {
+            checkScroll = 0
+            dismissKeyboard()
+            DispatchQueue.main.async {
+                self.scroll.scroll(to: .top)
+               
+            }
+        }
+        
+    }
 
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        print("exampleTextView: BEGIN EDIT")
+        checkScroll = 1
+        DispatchQueue.main.async {
+            
+            self.scroll.scroll(to: .center)
+            
+        }
+     }
+     
+     func textViewDidEndEditing(_ textView: UITextView) {
+         print("exampleTextView: END EDIT")
+      
+         DispatchQueue.main.async {
+                
+             self.scroll.scroll(to: .top)
+         }
+     }
     
     
     @IBAction func fixBtnWasPressed(_ sender: Any) {
@@ -212,9 +269,19 @@ class FixVC: UIViewController, FSCalendarDataSource, FSCalendarDelegate {
         // receive data 갱신해서 넘기기
         
     }
+
+    @IBAction func CalendarBtnWasPressed(_ sender: Any) {
+        let calendarVC = self.storyboard?.instantiateViewController(withIdentifier: "Calendar") as? PopUpCalendarVC
+        calendarVC?.modalPresentationStyle = .popover
+//        calendarVC?.PopUpcalendar.delegate = self
+//        calendarVC?.PopUpcalendar.dataSource = self
+        print("아니")
+        calendarVC?.enterType = 2
+        
+        self.present(calendarVC!, animated: true, completion: nil)
+    }
     
-    
-    
+
     
     @IBAction func fixImageLoadBtnWasPressed(_ sender: Any) {
         self.openLibrary()
@@ -228,21 +295,21 @@ class FixVC: UIViewController, FSCalendarDataSource, FSCalendarDelegate {
     }
     
     
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        print(dateFormatter.string(from: date) + " 선택됨")
-        receiveDate = dateFormatter.string(from: date)
-    }
-    
-    func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
-        switch dateFormatter.string(from: date) {
-        case dateFormatter.string(from: Date()):
-            return "오늘"
-        default:
-            return nil
-        }
-        
-    }
-    
+//    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+//        print(dateFormatter.string(from: date) + " 선택됨")
+//        receiveDate = dateFormatter.string(from: date)
+//    }
+//
+//    func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
+//        switch dateFormatter.string(from: date) {
+//        case dateFormatter.string(from: Date()):
+//            return "오늘"
+//        default:
+//            return nil
+//        }
+//
+//    }
+//
     /*
     // MARK: - Navigation
 
@@ -298,17 +365,4 @@ extension FixVC : UIImagePickerControllerDelegate, UINavigationControllerDelegat
 
 }
 
-
-extension FixVC: UITextViewDelegate {
-    func textViewDidChange(_ textView: UITextView) {
-        
-        let size = CGSize(width: view.frame.width, height: .infinity)
-        let estimatedSize = textView.sizeThatFits(size)
-        textView.constraints.forEach { (constraint) in
-            if constraint.firstAttribute == .height {
-                constraint.constant = estimatedSize.height
-            }
-        }
-    }
-}
 

@@ -1,10 +1,3 @@
-//
-//  Storage.swift
-//  AdvancedToDoApp
-//
-//  Created by 김영석 on 2020/11/08.
-//  Copyright © 2020 FastCampus. All rights reserved.
-//
 
 import Foundation
 

@@ -25,6 +25,7 @@
 		6C8E77E724DAE7B500D77643 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6C8E77E624DAE7B500D77643 /* Assets.xcassets */; };
 		6C8E77EA24DAE7B500D77643 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6C8E77E824DAE7B500D77643 /* LaunchScreen.storyboard */; };
 		6C8E77F324DAE8A900D77643 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8E77F224DAE8A900D77643 /* Task.swift */; };
+		C465535828FADB2200843BEE /* PopUpCalendarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C465535728FADB2200843BEE /* PopUpCalendarVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		6C8E77E924DAE7B500D77643 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6C8E77EB24DAE7B500D77643 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6C8E77F224DAE8A900D77643 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		C465535728FADB2200843BEE /* PopUpCalendarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpCalendarVC.swift; sourceTree = "<group>"; };
 		C4AB4A2925D4B5460018F242 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -92,6 +94,7 @@
 				19E970562552762000BB9BA6 /* DetailVC.swift */,
 				19C09CFA255F3AD500A63A13 /* FixVC.swift */,
 				19D87BEE25687D9F00A33684 /* OpenSourceVC.swift */,
+				C465535728FADB2200843BEE /* PopUpCalendarVC.swift */,
 			);
 			path = VC;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 				19E970572552762000BB9BA6 /* DetailVC.swift in Sources */,
 				6C8E77DE24DAE7B300D77643 /* AppDelegate.swift in Sources */,
 				6C8E77E024DAE7B300D77643 /* SceneDelegate.swift in Sources */,
+				C465535828FADB2200843BEE /* PopUpCalendarVC.swift in Sources */,
 				19C09CEA2557BC7200A63A13 /* Todo.swift in Sources */,
 				19C09CED2557BE1000A63A13 /* Storage.swift in Sources */,
 				19AEDC182568608000506529 /* OpenSourceViewCell.swift in Sources */,
