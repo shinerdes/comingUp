@@ -16,8 +16,8 @@ class SettingVC: UIViewController, UITableViewDataSource, UITableViewDelegate{
     var source = ""
     
     func anotherAlert() {
-        let doneAlert = UIAlertController(title: "끝났다", message: nil, preferredStyle: UIAlertController.Style.alert)
-        doneAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler : nil))
+        let doneAlert = UIAlertController(title: "모든 데이터가 삭제되었습니다.", message: nil, preferredStyle: UIAlertController.Style.alert)
+        doneAlert.addAction(UIAlertAction(title: "OK", style: .default, handler : nil))
         self.present(doneAlert, animated: false, completion: nil)
     }
     
