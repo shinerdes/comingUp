@@ -1,10 +1,3 @@
-//
-//  OpenSourceViewCell.swift
-//  AdvancedToDoApp
-//
-//  Created by 김영석 on 2020/11/21.
-//  Copyright © 2020 FastCampus. All rights reserved.
-//
 
 import UIKit
 

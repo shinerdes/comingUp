@@ -1,10 +1,4 @@
-//
-//  MainTableCell.swift
-//  AdvancedToDoApp
-//
-//  Created by 김영석 on 2020/10/28.
-//  Copyright © 2020 FastCampus. All rights reserved.
-//
+
 
 import UIKit
 

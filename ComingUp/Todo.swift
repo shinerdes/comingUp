@@ -17,7 +17,7 @@ struct Todo: Codable, Equatable {
     
     
     mutating func update(title: String, content: String, date: String, imageHead: String, favorite: Bool) {
-        // [x] TODO: update 로직 추가
+
         self.title = title
         self.content = content
         self.date = date
@@ -38,7 +38,7 @@ class TodoManager {
     var todos: [Todo] = []
     
     func createTodo(title: String, content: String, date: String, imageHead: String, createDate: String) -> Todo {
-        // [x] TODO: create로직 추가
+
         let nextId = TodoManager.lastId + 1
         TodoManager.lastId = nextId
         return Todo(id: nextId, title: title, content: content, date: date, imageHead: imageHead, favorite: false, createDate: createDate)
@@ -46,13 +46,13 @@ class TodoManager {
     }
     
     func addTodo(_ todo: Todo) {
-        // [x] TODO: add로직 추가
+
         todos.append(todo)
         saveTodo()
     }
     
     func deleteTodo(_ todo: Todo) {
-        // [x] TODO: delete 로직 추가
+
         todos = todos.filter { $0.id != todo.id }
 //        if let index = todos.firstIndex(of: todo) {
 //            todos.remove(at: index)
@@ -61,8 +61,7 @@ class TodoManager {
     }
     
     func updateTodo(_ todo: Todo) {
-        // [x] TODO: updatee 로직 추가
-        
+
         todos[todo.id].update(title: todo.title, content: todo.content, date: todo.date, imageHead: todo.imageHead, favorite: false)
         saveTodo()
     }
